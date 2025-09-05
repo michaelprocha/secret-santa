@@ -7,21 +7,19 @@
 	const result = document.getElementById("lista-sorteio");
 
 	let friends = [];
-	let drawResult = [];
-	let numbers = [];
 
-	function draw() {
-		let newResult = parseInt(Math.random() * friends.length);
-		let repeated = false;
-		numbers.forEach((results) => {
-			if (results == newResult) {
-				repeated = true;
-			}
-		});
-		if (repeated) {
-			newResult = draw();
-		}
-		return newResult;
+	function draw(numbers) {
+		
+		let newDraw = Math.floor(Math.random() * numbers.length);
+		// let repeated = false;
+		// if (numbers[newDraw] == i) {
+		// 	repeated = true;
+		// }
+		// if (repeated) {
+		// 	newDraw = draw(numbers, i);
+		// }
+		// console.log(newDraw);
+		return newDraw;
 	}
 
 	btnAdd.addEventListener("click", () => {
@@ -42,29 +40,23 @@
 
 	btnDraw.addEventListener("click", () => {
 		if (friends.length > 1) {
-			friends.forEach(() => {
-				let newResult = draw();
-				drawResult.push(friends[newResult]);
-				numbers.push(newResult);
+			let textResult = "";
+			let undrawnNumbers = [];
+			friends.forEach((element, i) => {
+				undrawnNumbers.push(i);
 			});
-			result.textContent = "";
-			let fullResult = "";
-			drawResult.forEach((oldResult, i) => {
-				if (i % 2 == 0) {
-					fullResult += `${oldResult} -> `;
-				} else {
-					fullResult += `${oldResult}<br/>`;
+			friends.forEach((element, i, list) => {
+				let nForDraw = undrawnNumbers.filter(n => n != i);
+				if (nForDraw.length === 0) {
+					textResult = "Não foi possível sortear sem repetições.";
+					return;
 				}
-				console.log(i % 2);
+				let drawFriend = draw(nForDraw);
+				let nDraw = nForDraw[drawFriend]
+				undrawnNumbers.splice(undrawnNumbers.indexOf(nDraw), 1);
+				textResult += `${element} -> ${list[nDraw]}<br/>`;
 			});
-			if (drawResult.length % 2 != 0) {
-				fullResult += `${drawResult[0]}`;
-			} else {
-				fullResult += `${drawResult[drawResult.length - 1]} -> ${drawResult[0]}`;
-			}
-			result.innerHTML = fullResult;
-			console.log(numbers);
-			console.log(drawResult);
+			result.innerHTML = textResult;
 		}
 	});
 })();
