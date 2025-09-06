@@ -14,7 +14,7 @@
 	}
 
 	btnAdd.addEventListener("click", () => {
-		if (friends.includes(name.value)) {
+		if (!friends.includes(name.value)) {
 			if (name.value) {
 				friends.push(name.value);
 				name.value = "";
