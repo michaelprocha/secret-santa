@@ -14,18 +14,20 @@
 	}
 
 	btnAdd.addEventListener("click", () => {
-		if (name.value) {
-			friends.push(name.value);
-			name.value = "";
-
-			friendList.textContent = "";
-			friends.forEach((friend, i) => {
-				if (i == 0) {
-					friendList.textContent += `${friend}`;
-				} else {
-					friendList.textContent += ` - ${friend}`;
-				}
-			});
+		if (friends.includes(name.value)) {
+			if (name.value) {
+				friends.push(name.value);
+				name.value = "";
+	
+				friendList.textContent = "";
+				friends.forEach((friend, i) => {
+					if (i == 0) {
+						friendList.textContent += `${friend}`;
+					} else {
+						friendList.textContent += ` - ${friend}`;
+					}
+				});
+			}
 		}
 	});
 
