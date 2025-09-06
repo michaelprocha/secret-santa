@@ -9,16 +9,7 @@
 	let friends = [];
 
 	function draw(numbers) {
-		
 		let newDraw = Math.floor(Math.random() * numbers.length);
-		// let repeated = false;
-		// if (numbers[newDraw] == i) {
-		// 	repeated = true;
-		// }
-		// if (repeated) {
-		// 	newDraw = draw(numbers, i);
-		// }
-		// console.log(newDraw);
 		return newDraw;
 	}
 
@@ -40,23 +31,34 @@
 
 	btnDraw.addEventListener("click", () => {
 		if (friends.length > 1) {
+			let isValid = true;
 			let textResult = "";
-			let undrawnNumbers = [];
-			friends.forEach((element, i) => {
-				undrawnNumbers.push(i);
-			});
-			friends.forEach((element, i, list) => {
-				let nForDraw = undrawnNumbers.filter(n => n != i);
-				if (nForDraw.length === 0) {
-					textResult = "Não foi possível sortear sem repetições.";
-					return;
-				}
-				let drawFriend = draw(nForDraw);
-				let nDraw = nForDraw[drawFriend]
-				undrawnNumbers.splice(undrawnNumbers.indexOf(nDraw), 1);
-				textResult += `${element} -> ${list[nDraw]}<br/>`;
-			});
+			do {
+				isValid = true;
+				textResult = "";
+				let undrawnNumbers = [];
+				friends.forEach((element, i) => {
+					undrawnNumbers.push(i);
+				});
+
+				friends.forEach((element, i, list) => {
+					let nForDraw = undrawnNumbers.filter((n) => n != i);
+					if (nForDraw.length === 0) {
+						isValid = false;
+					}
+					let drawFriend = draw(nForDraw);
+					let nDraw = nForDraw[drawFriend];
+					undrawnNumbers.splice(undrawnNumbers.indexOf(nDraw), 1);
+					textResult += `${element} -> ${list[nDraw]}<br/>`;
+				});
+			} while (!isValid);
 			result.innerHTML = textResult;
 		}
+	});
+
+	reset.addEventListener("click", () => {
+		friends = [];
+		friendList.textContent = "";
+		result.textContent = "";
 	});
 })();
